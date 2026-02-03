@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Jenny 💖 Will You Be My Val?</title>
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  background: radial-gradient(circle, #ff9a9e, #fad0c4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Comic Sans MS', cursive;
+  overflow: hidden;
+}
+
+/* Container */
+.container {
+  background: white;
+  padding: 40px;
+  border-radius: 30px;
+  text-align: center;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.25);
+  position: relative;
+  animation: pop 1s ease;
+}
+
+@keyframes pop {
+  0% { transform: scale(0.4); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Animated name */
+.name {
+  font-size: 3.2em;
+  color: #ff3366;
+  animation: glow 2s infinite alternate, bounce 2s infinite;
+}
+
+@keyframes glow {
+  from { text-shadow: 0 0 10px #ff80ab; }
+  to { text-shadow: 0 0 25px #ff1744; }
+}
+
+@keyframes bounce {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+h2 {
+  color: #ff4081;
+  font-size: 2em;
+}
+
+/* Buttons */
+button {
+  padding: 15px 35px;
+  font-size: 1.2em;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  margin: 12px;
+  transition: 0.3s;
+}
+
+#yes {
+  background: #ff3366;
+  color: white;
+}
+
+#yes:hover {
+  transform: scale(1.15);
+}
+
+#no {
+  background: #ccc;
+  position: absolute;
+}
+
+.option-btn {
+  background: #ff80ab;
+  color: white;
+}
+
+.option-btn:hover {
+  transform: scale(1.15);
+}
+
+.hidden {
+  display: none;
+}
+
+/* Floating hearts */
+.heart {
+  position: fixed;
+  bottom: -20px;
+  font-size: 24px;
+  animation: float 6s linear;
+}
+
+@keyframes float {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(-100vh); opacity: 0; }
+}
+
+/* Fireworks */
+.firework {
+  position: fixed;
+  font-size: 30px;
+  animation: explode 1.2s ease-out forwards;
+}
+
+@keyframes explode {
+  0% { transform: scale(0); opacity: 1; }
+  100% { transform: scale(3); opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Romantic Music -->
+,<!-- <audio autoplay loop>
+  <source src="love.mp3" type="audio/mpeg">
+</audio> -->
+
+<audio id="bgMusic" loop>
+  <source src="love.mp3" type="audio/mpeg">
+</audio>
+
+
+<div class="container">
+  <div class="name">Jenny 💖</div>
+  <h2>Will you be my Val? 💌</h2>
+
+  <button id="yes">Yes 💕</button>
+  <button id="no">No 😅</button>
+
+  <div id="choices" class="hidden">
+    <h2>Yaaay 🥰</h2>
+    <p>What would you like?</p>
+
+    <button class="option-btn" onclick="sendChoice('Dinner Date 🍽️')">
+      🍽️ Dinner Date
+    </button>
+
+    <button class="option-btn" onclick="sendChoice('Movie Date 🎬')">
+      🎬 Movie Date
+    </button>
+  </div>
+
+  <div id="final" class="hidden">
+    <h1>💖 You just made my day 💖</h1>
+  </div>
+</div>
+
+<script>
+const noBtn = document.getElementById("no");
+const yesBtn = document.getElementById("yes");
+const choices = document.getElementById("choices");
+const finalMsg = document.getElementById("final");
+
+// Run-away NO button
+noBtn.addEventListener("mouseover", () => {
+  noBtn.style.left = Math.random() * (window.innerWidth - 120) + "px";
+  noBtn.style.top = Math.random() * (window.innerHeight - 60) + "px";
+});
+
+// YES click
+const music = document.getElementById("bgMusic");
+
+yesBtn.addEventListener("click", () => {
+  music.play();   // 🔊 music starts here
+  yesBtn.style.display = "none";
+  noBtn.style.display = "none";
+  choices.classList.remove("hidden");
+  fireworks();
+});
+
+
+// Send choice to your email
+function sendChoice(choice) {
+  fetch("https://formspree.io/f/mvzqlywe", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      message: "Jenny chose: " + choice
+    })
+  });
+
+  choices.classList.add("hidden");
+  finalMsg.classList.remove("hidden");
+  fireworks();
+}
+
+// Floating hearts
+setInterval(() => {
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerHTML = "💖";
+  heart.style.left = Math.random() * 100 + "vw";
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 6000);
+}, 400);
+
+// Fireworks effect
+function fireworks() {
+  for (let i = 0; i < 20; i++) {
+    const fw = document.createElement("div");
+    fw.className = "firework";
+    fw.innerHTML = "🎆";
+    fw.style.left = Math.random() * 100 + "vw";
+    fw.style.top = Math.random() * 100 + "vh";
+    document.body.appendChild(fw);
+    setTimeout(() => fw.remove(), 1200);
+  }
+}
+</script>
+
+</body>
+</html>
